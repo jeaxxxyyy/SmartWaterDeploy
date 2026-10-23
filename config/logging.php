@@ -74,7 +74,9 @@ return [
         ],
 
         'audit' => [
-            'driver' => 'daily',
+            'driver' => env('VERCEL') === '1' ? 'monolog' : 'daily',
+            'handler' => StreamHandler::class,
+            'handler_with' => ['stream' => 'php://stderr'],
             'path' => storage_path('logs/audit.log'),
             'level' => env('AUDIT_LOG_LEVEL', 'info'),
             'days' => env('AUDIT_LOG_DAYS', 90),

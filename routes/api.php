@@ -21,11 +21,14 @@ use App\Http\Controllers\Api\LeakAlertController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\NotificationPreferenceController;
 use App\Http\Controllers\Api\ReportController;
+use App\Http\Controllers\Api\SchedulerController;
 use App\Http\Controllers\Api\ServiceRequestController;
 use App\Http\Controllers\Api\SystemHealthController;
 use App\Http\Controllers\Api\UserManagementController;
 use App\Http\Controllers\Api\WaterController;
 use Illuminate\Support\Facades\Route;
+
+Route::match(['get', 'post'], '/internal/schedule', SchedulerController::class)->name('scheduler.run');
 
 // Health check -------------------------------------------------
 Route::get('/ping', function () {

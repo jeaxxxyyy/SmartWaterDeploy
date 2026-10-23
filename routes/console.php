@@ -1,10 +1,10 @@
 <?php
 
+use App\Models\User;
+use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
-use App\Models\User;
-use Illuminate\Console\Command;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -47,6 +47,11 @@ Artisan::command('user:make-admin {email : Email address of the existing user}',
     return Command::SUCCESS;
 })->purpose('Promote an existing household user to admin from the server console');
 
-Schedule::command('auth:clear-resets')->daily();
-Schedule::command('sanctum:prune-expired', ['--hours' => 24])->daily();
-Schedule::command('notifications:deliver-scheduled')->everyMinute();
+$scheduleCommand = static function (string $command, array $arguments = []) {
+    // Run in process so maintenance completes before a serverless request ends.
+    return Schedule::call(fn () => Artisan::call($command, $arguments) === Command::SUCCESS)->name($command);
+};
+
+$scheduleCommand('auth:clear-resets')->daily();
+$scheduleCommand('sanctum:prune-expired', ['--hours' => 24])->daily();
+$scheduleCommand('notifications:deliver-scheduled')->everyMinute();

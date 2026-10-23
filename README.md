@@ -74,6 +74,8 @@ php artisan serve --host=0.0.0.0 --port=8000
 
 ## Verification
 
+For Vercel import settings, environment variables, database setup, and the protected scheduler, see the [Vercel deployment instructions](docs/OPERATIONS.md#vercel-deployment).
+
 ```bash
 php artisan test
 npm run test:frontend
