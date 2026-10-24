@@ -7,6 +7,41 @@ use Tests\TestCase;
 
 class ServerlessRuntimeTest extends TestCase
 {
+    public function test_serverless_exception_logs_keep_the_cause_without_a_long_stack_trace(): void
+    {
+        $script = <<<'PHP'
+require 'vendor/autoload.php';
+$app = require 'bootstrap/app.php';
+$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+$fail = function (int $depth) use (&$fail): void {
+    if ($depth === 0) {
+        throw new RuntimeException('Database connection diagnostic');
+    }
+    $fail($depth - 1);
+};
+try {
+    $fail(80);
+} catch (Throwable $exception) {
+    report($exception);
+}
+PHP;
+        $process = new Process([PHP_BINARY, '-r', $script], base_path(), [
+            'VERCEL' => '1',
+            'APP_ENV' => 'production',
+            'APP_DEBUG' => 'false',
+            'LOG_CHANNEL' => 'stderr',
+            'LOG_STDERR_FORMATTER' => false,
+        ]);
+        $process->mustRun();
+
+        $log = $process->getErrorOutput();
+        $this->assertStringContainsString('Database connection diagnostic', $log);
+        $this->assertStringContainsString('RuntimeException', $log);
+        $this->assertStringNotContainsString('[stacktrace]', $log);
+        $this->assertLessThan(2000, strlen($log));
+        $this->assertSame('', $process->getOutput());
+    }
+
     public function test_php_startup_failures_are_logged_without_exposing_them_in_the_response(): void
     {
         $process = new Process([

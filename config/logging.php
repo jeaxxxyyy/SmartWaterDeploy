@@ -1,5 +1,6 @@
 <?php
 
+use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -111,7 +112,8 @@ return [
             'handler_with' => [
                 'stream' => 'php://stderr',
             ],
-            'formatter' => env('LOG_STDERR_FORMATTER'),
+            // Long exception traces can hide the error message in runtime log tails.
+            'formatter' => env('LOG_STDERR_FORMATTER', env('VERCEL') === '1' ? LineFormatter::class : null),
             'processors' => [PsrLogMessageProcessor::class],
         ],
 
