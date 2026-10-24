@@ -35,6 +35,8 @@ If the imported accounts use the development credentials documented in the READM
 
 In the **smart-water-deploy** project's Production environment variables, use the values in the private `.env.vercel.neon` file. The important database settings are:
 
+If the project already has environment variables, update existing entries through their Edit controls. The Add/Import form creates entries and can reject a full file when names already exist. Add only names that are missing. If an import reports duplicates, check the saved list before retrying: some new entries may have been created even though other entries failed.
+
 | Name | Value |
 | --- | --- |
 | `DB_CONNECTION` | `pgsql` |
