@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'SmartWater')
+@section('title', 'Smart Water Monitoring System')
 @section('page', 'home')
 @push('head')
+    @include('components.site-meta')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
@@ -23,7 +24,7 @@
         <div class="landing-hero-copy">
             <p class="eyebrow">Smart water, clearly managed</p>
             <h1 id="home-title">Make every drop <span>count.</span></h1>
-            <p class="landing-lede">SmartWater brings live household readings, reliable billing analytics, and municipal oversight into one clear, connected platform.</p>
+            <p class="landing-lede">Smart Water brings live household readings, reliable billing analytics, and municipal oversight into one clear, connected platform.</p>
 
             <div class="hero-actions">
                 <a class="button button-primary" href="{{ route('login') }}" data-home-session-action data-authenticated-label="Open Dashboard">
@@ -39,7 +40,7 @@
             </div>
         </div>
 
-        <div class="landing-preview" aria-label="SmartWater dashboard preview">
+        <div class="landing-preview" aria-label="Smart Water dashboard preview">
             <div class="preview-glow"></div>
             <div class="preview-card">
                 <div class="preview-header">
@@ -75,7 +76,7 @@
         </div>
     </section>
 
-    <section class="landing-strip" aria-label="How SmartWater works">
+    <section class="landing-strip" aria-label="How Smart Water works">
         <div><strong>From sensor to insight</strong><span>Everything you need to make better water decisions.</span></div>
         <div class="strip-step"><b>01</b><span>Connect your meter</span></div>
         <div class="strip-step"><b>02</b><span>See live readings</span></div>
@@ -109,18 +110,18 @@
                 <p class="eyebrow">Built-in confidence</p>
                 <h3>Useful data, securely delivered.</h3>
                 <p>Scoped device credentials, role-based access, and audit history keep every reading accountable from meter to dashboard.</p>
-                <a href="#about">Learn about SmartWater <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+                <a href="#about">Learn about Smart Water <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
             </article>
         </div>
     </section>
 
     <section class="home-about" id="about" aria-labelledby="about-title">
         <div class="home-about-copy">
-            <p class="eyebrow">About SmartWater</p>
+            <p class="eyebrow">About Smart Water</p>
             <h2 id="about-title">A better operating picture for every drop.</h2>
-            <p>SmartWater connects trusted meter data with practical tools for the people who use, manage, and protect water every day.</p>
+            <p>Smart Water connects trusted meter data with practical tools for the people who use, manage, and protect water every day.</p>
         </div>
-        <div class="home-about-stats" aria-label="SmartWater capabilities">
+        <div class="home-about-stats" aria-label="Smart Water capabilities">
             <div><strong>Near real-time</strong><span>Usage updates</span></div>
             <div><strong>24/7</strong><span>Alert visibility</span></div>
             <div><strong>1 view</strong><span>For every role</span></div>
@@ -134,12 +135,12 @@
             <p>Sign in to open the tools and insights configured for your account.</p>
         </div>
         <a class="button button-light" href="{{ route('login') }}" data-home-session-action data-authenticated-label="Open Your Dashboard">
-            <span data-home-session-label>Sign In to SmartWater</span> <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            <span data-home-session-label>Sign In to Smart Water</span> <i class="bi bi-arrow-right" aria-hidden="true"></i>
         </a>
     </section>
 
     <footer class="home-footer">
-        <span>&copy; {{ now()->year }} SmartWater</span>
+        <span>&copy; {{ now()->year }} Smart Water Monitoring System</span>
         <span>Secure water intelligence for every community</span>
     </footer>
 @endsection

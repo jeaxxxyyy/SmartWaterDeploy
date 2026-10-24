@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Household | SmartWater')
+@section('title', 'Household | Smart Water Monitoring')
 @section('page', 'household')
 @section('app-header-actions')
     <div class="household-header-actions" aria-label="Household account actions">
@@ -765,7 +765,7 @@
                     <div class="form-grid-two"><label>Quiet hours start<input type="time" name="quiet_hours_start"></label><label>Quiet hours end<input type="time" name="quiet_hours_end"></label></div>
                     <label>Language<select name="preferred_locale"><option value="en">English</option><option value="fil">Filipino</option></select></label>
                     <label class="admin-checkbox-field"><span>Low-bandwidth mode</span><span><input type="checkbox" name="low_bandwidth_mode"> Reduce polling and motion</span></label>
-                    <button class="link-button account-install-link" type="button" data-install-app hidden>Install SmartWater on this device</button>
+                    <button class="link-button account-install-link" type="button" data-install-app hidden>Install Smart Water on this device</button>
                     <div class="form-feedback" data-preferences-feedback role="status" aria-live="polite" hidden></div>
                     <button class="button button-primary" type="submit">Save preferences</button>
                 </form>

@@ -1,4 +1,4 @@
-const CACHE = 'smartwater-shell-v2';
+const CACHE = 'smart-water-shell-v1';
 const SHELL = ['/', '/login', '/household', '/admin', '/offline.html', '/manifest.webmanifest', '/smart-water-icon.svg', '/favicon.ico'];
 
 self.addEventListener('install', (event) => {

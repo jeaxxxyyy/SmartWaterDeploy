@@ -8,25 +8,25 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 @endpush
 
-@section('title', 'Sign in | SmartWater')
+@section('title', 'Sign in | Smart Water Monitoring')
 @section('page', 'login')
 
 @section('content')
-    <section class="login-page container-fluid px-0" aria-label="SmartWater account sign in">
+    <section class="login-page container-fluid px-0" aria-label="Smart Water account sign in">
         <div class="login-layout row g-0">
             <section class="login-brand-panel col-lg-5" aria-labelledby="login-brand-title">
                 <div class="login-brand-content">
                     <div class="login-brand-lockup">
                         @include('components.brand-mark')
                         <span>
-                            <strong>SmartWater</strong>
+                            <strong>Smart Water</strong>
                             <small>Monitoring System</small>
                         </span>
                     </div>
 
                     <div class="login-brand-copy">
                         <span class="login-overline">Connected water intelligence</span>
-                        <h1 id="login-brand-title">SmartWater</h1>
+                        <h1 id="login-brand-title">Smart Water<br>Monitoring System</h1>
                         <p>Real-time monitoring and analytics for household and municipal water consumption.</p>
                     </div>
 
@@ -134,7 +134,7 @@
         </div>
 
         <footer class="login-footer text-center" aria-label="Application information">
-            <span>&copy; {{ now()->year }} SmartWater <b aria-hidden="true">&bull;</b> Version 1.0</span>
+            <span>&copy; {{ now()->year }} Smart Water Monitoring System <b aria-hidden="true">&bull;</b> Version 1.0</span>
         </footer>
 
         <div class="login-transition" data-login-transition role="status" aria-live="polite" hidden>

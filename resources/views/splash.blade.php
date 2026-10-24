@@ -1,6 +1,6 @@
 @extends('layouts.guest')
 
-@section('title', 'SmartWater')
+@section('title', 'Smart Water Monitoring System')
 @section('page', 'splash')
 
 @section('content')
@@ -13,7 +13,7 @@
                 </svg>
             </div>
             <p class="splash-kicker">Connected water intelligence</p>
-            <h1 id="splash-title">SmartWater</h1>
+            <h1 id="splash-title">Smart Water<br>Monitoring System</h1>
             <p class="splash-subtitle">Real-Time Water Monitoring &amp; Analytics</p>
 
             <div class="splash-loader" role="status" aria-live="polite" aria-label="Loading system">

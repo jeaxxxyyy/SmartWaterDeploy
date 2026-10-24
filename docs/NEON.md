@@ -46,7 +46,7 @@ If the project already has environment variables, update existing entries throug
 | `DB_CHARSET` | `utf8` |
 | `PGOPTIONS` | `endpoint=YOUR_POOLED_ENDPOINT`, using the first segment of the pooled hostname, including `-pooler` |
 
-`DB_URL` supplies the host, port, database, username, and password. Check that an old MySQL connection string is not overriding it. Keep `APP_NAME=SmartWater`, `APP_ENV=production`, `APP_DEBUG=false`, and `APP_URL=https://smartwater-monitoring-system.vercel.app` for the current deployment. The Vercel project is still named `smart-water-deploy`. Use separate database credentials and a separate database branch for Preview deployments.
+`DB_URL` supplies the host, port, database, username, and password. Check that an old MySQL connection string is not overriding it. Keep `APP_NAME="Smart Water Monitoring"`, `APP_ENV=production`, `APP_DEBUG=false`, and `APP_URL=https://smartwater-monitoring-system.vercel.app` for the current deployment. The Vercel project is still named `smart-water-deploy`. Use separate database credentials and a separate database branch for Preview deployments.
 
 The deployed PHP runtime's PostgreSQL client requires the explicit routing hint in `PGOPTIONS`. Without it, Neon reports “Endpoint ID is not specified” when TLS SNI is unavailable. Set this variable in Vercel before deploying so libpq receives it at process startup. For example, host `ep-example-pooler.c-6.us-east-2.aws.neon.tech` uses `PGOPTIONS=endpoint=ep-example-pooler`. Keep TLS enabled. Appending an arbitrary `options` parameter to `DB_URL` alone does not work with the current Laravel connector, which builds its own PDO DSN.
 

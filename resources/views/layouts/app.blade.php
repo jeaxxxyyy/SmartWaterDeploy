@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#075985">
-    @include('components.site-meta')
     <link rel="manifest" href="/manifest.webmanifest">
     <link rel="icon" href="/smart-water-icon.svg" type="image/svg+xml">
-    <title>@yield('title', config('app.name', 'SmartWater'))</title>
+    <title>@yield('title', config('app.name', 'Smart Water Monitoring'))</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     @include('components.theme-init')
     @stack('head')
@@ -37,10 +36,10 @@
             @hasSection('admin-topbar')
                 @yield('admin-topbar')
             @else
-                <a href="{{ route('home') }}" class="brand" aria-label="SmartWater home">
+                <a href="{{ route('home') }}" class="brand" aria-label="Smart Water Monitoring home">
                     @include('components.brand-mark')
                     <span>
-                        <strong>SmartWater</strong>
+                        <strong>Smart Water</strong>
                         <small>Monitoring System</small>
                     </span>
                 </a>
@@ -65,7 +64,7 @@
 
                 <div class="offcanvas offcanvas-end home-offcanvas d-lg-none" tabindex="-1" id="home-navigation" aria-labelledby="home-navigation-title">
                     <div class="offcanvas-header">
-                        <h2 class="offcanvas-title" id="home-navigation-title">SmartWater</h2>
+                        <h2 class="offcanvas-title" id="home-navigation-title">Smart Water</h2>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close navigation"></button>
                     </div>
                     <div class="offcanvas-body">
@@ -100,7 +99,7 @@
             @else
                 <aside class="dashboard-sidebar panel">
                     <div class="sidebar-brand">
-                        <p class="eyebrow">@yield('title', config('app.name', 'SmartWater'))</p>
+                        <p class="eyebrow">@yield('title', config('app.name', 'Smart Water Monitoring'))</p>
                         <h2>Navigation</h2>
                         <p class="subtle">Use the sections on the left to switch between dashboard views.</p>
                     </div>

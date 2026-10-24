@@ -3096,7 +3096,7 @@ const renderAdminAlerts = (items) => {
             + '<form class="stack-form leak-alert-notify-form" data-leak-alert-notify-form>'
             + '<div class="leak-alert-workflow-heading"><div><p class="eyebrow">Household notification</p><p>Send a follow-up after reviewing the alert.</p></div></div>'
             + '<div class="leak-alert-notify-fields"><label>Follow-up title<input type="text" name="title" maxlength="255" value="Follow-up: possible water leak" required></label>'
-            + '<label>Follow-up message<textarea name="message" maxlength="2000" required>SmartWater is following up on the possible leak detected by your meter. Please check your household plumbing and contact the municipal water office if the flow continues.</textarea></label></div>'
+            + '<label>Follow-up message<textarea name="message" maxlength="2000" required>Smart Water is following up on the possible leak detected by your meter. Please check your household plumbing and contact the municipal water office if the flow continues.</textarea></label></div>'
             + '<div class="leak-alert-card-actions"><button class="button button-primary" type="submit">Notify household</button></div>'
             + '</form></div></article>';
     }).join('');

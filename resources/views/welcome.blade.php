@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'SmartWater') }}</title>
+    <title>{{ config('app.name', 'Smart Water Monitoring') }}</title>
     @include('components.theme-init')
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -18,7 +18,7 @@
     <main class="shell">
         <header class="panel panel-hero">
             <div class="hero-copy">
-                <p class="eyebrow">SmartWater Consumption Monitoring</p>
+                <p class="eyebrow">Smart Water Consumption Monitoring</p>
                 <h1>Household water, billing, and leak monitoring in one place.</h1>
                 <p class="lede">Live readings from the M5Stack device, estimated billing, alerts, and administrative tracking aligned with the research document.</p>
             </div>

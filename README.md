@@ -1,6 +1,6 @@
-# SmartWater
+# Smart Water Monitoring
 
-SmartWater is a Laravel application for household water telemetry, estimated billing, alerts, reports, and municipal device lifecycle management. ESP32-S3/M5Stack CoreS3 meters send readings to the Laravel API and the dashboard refreshes live data every three seconds.
+Smart Water Monitoring is a Laravel application for household water telemetry, estimated billing, alerts, reports, and municipal device lifecycle management. ESP32-S3/M5Stack CoreS3 meters send readings to the Laravel API and the dashboard refreshes live data every three seconds.
 
 ## Requirements
 
@@ -39,7 +39,7 @@ Demo credentials are created only by the development seeder. Existing passwords 
 | `app/Models` | Eloquent models and relationships |
 | `app/Services` | Billing, consumption, and audit business logic |
 | `arduino/smartwater` | ESP32-S3/M5Stack firmware |
-| `config` | Application and SmartWater configuration |
+| `config` | Application and Smart Water configuration |
 | `database` | Migrations, factories, and seed data |
 | `resources/views` | Blade layout, page, and report templates |
 | `resources/css` and `resources/js` | Vite-managed frontend assets |

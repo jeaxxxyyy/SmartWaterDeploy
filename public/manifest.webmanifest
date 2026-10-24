@@ -1,6 +1,6 @@
 {
-  "name": "SmartWater",
-  "short_name": "SmartWater",
+  "name": "Smart Water Monitoring",
+  "short_name": "Smart Water",
   "description": "Household water usage, billing, alerts, and municipal services.",
   "start_url": "/",
   "display": "standalone",
