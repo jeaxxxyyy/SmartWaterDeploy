@@ -28,6 +28,7 @@
         <span class="admin-sidebar-mark"><i class="bi bi-droplet-half" aria-hidden="true"></i></span>
         <div class="admin-sidebar-brand-copy"><strong>Smart Water</strong><small>Operations console</small></div>
         <button class="admin-sidebar-collapse" type="button" data-admin-sidebar-collapse aria-controls="admin-sidebar" aria-expanded="true" aria-label="Collapse administrator sidebar" title="Collapse sidebar">@include('components.ui-icon', ['name' => 'sidebar-collapse'])</button>
+        <button class="sidebar-mobile-close" type="button" data-bs-dismiss="offcanvas" data-bs-target="#admin-sidebar" aria-label="Close administrator navigation"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
     </div>
     <nav class="sidebar-nav admin-sidebar-nav" aria-label="Administrator sections">
         <span class="sidebar-section-title">Dashboard</span>
@@ -578,7 +579,11 @@
                 <div class="billing-export-actions"><button class="button button-ghost" type="button" data-billing-export="/api/exports/billing-statements" hidden disabled>Export billing records</button></div>
             </div>
             <div class="billing-management-error" data-billing-management-error role="alert" hidden></div>
-            <div class="table billing-management-table">
+            <div class="horizontal-scroll-controls" data-table-scroll-controls data-scroll-target="admin-billing-records" hidden>
+                <span>More billing columns</span>
+                <div><button class="button button-ghost" type="button" data-scroll-direction="-1" aria-controls="admin-billing-records">← Scroll left</button><button class="button button-ghost" type="button" data-scroll-direction="1" aria-controls="admin-billing-records">Scroll right →</button></div>
+            </div>
+            <div class="table billing-management-table" id="admin-billing-records">
                 <div class="table-head"><span>Household</span><span>Period</span><span>Consumption</span><span>Charges</span><span>Status</span><span>Actions</span></div>
                 <div class="table-body" data-billing-management-records><div class="empty-state">Loading billing records...</div></div>
             </div>

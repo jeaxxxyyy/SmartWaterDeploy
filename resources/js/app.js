@@ -1,3 +1,5 @@
+import { bootResponsiveLayout, observeChartWidth, responsiveChartWidth, setHouseholdNavigationOpen } from './responsive-layout';
+
 const tokenKey = 'smart-water-token';
 const sessionUserKey = 'smart-water-session-user';
 const dashboardCachePrefix = 'smart-water-dashboard-cache';
@@ -98,9 +100,6 @@ const statusLabel = $('[data-status]');
 const tokenInput = $('[data-token-input]');
 const saveTokenButton = $('[data-token-save]');
 const refreshButton = $('[data-refresh]');
-const householdSidebar = $('[data-household-sidebar]');
-const householdSidebarToggle = $('[data-household-sidebar-toggle]');
-const householdSidebarDismiss = $('[data-household-sidebar-dismiss]');
 const householdSidebarCollapse = $('[data-household-sidebar-collapse]');
 const notificationControl = $('[data-notification-control]');
 const notificationToggle = $('[data-notification-toggle]');
@@ -1149,6 +1148,8 @@ const renderPager = (container, paginator, onPageChange) => {
 
 const renderHouseholdAreaChart = (container, series, options = {}) => {
     if (!container) return;
+    observeChartWidth(container, () => renderHouseholdAreaChart(container, series, options));
+    const width = responsiveChartWidth(container);
 
     const rows = (Array.isArray(series) ? series : []).map((row) => {
         const readingCount = row.reading_count === undefined || row.reading_count === null
@@ -1173,7 +1174,6 @@ const renderHouseholdAreaChart = (container, series, options = {}) => {
         container.classList.add('is-empty');
         container.dataset.chartSignature = JSON.stringify({ rows, state: 'empty' });
         if (options.showEmptyChart) {
-            const width = 760;
             const height = 320;
             const padding = { top: 22, right: 20, bottom: 42, left: 58 };
             const plotBottom = height - padding.bottom;
@@ -1202,11 +1202,10 @@ const renderHouseholdAreaChart = (container, series, options = {}) => {
 
     container.classList.remove('is-empty', 'has-empty-chart');
     const chartRows = actualIndexes.map((index) => rows[index]);
-    const signature = JSON.stringify({ chartRows, state: 'area' });
+    const signature = JSON.stringify({ chartRows, state: 'area', width });
     if (container.dataset.chartSignature === signature) return;
     container.dataset.chartSignature = signature;
 
-    const width = 760;
     const height = 320;
     const padding = { top: 22, right: 20, bottom: 52, left: 58 };
     const plotWidth = width - padding.left - padding.right;
@@ -1242,8 +1241,8 @@ const renderHouseholdAreaChart = (container, series, options = {}) => {
         const y = padding.top + plotHeight - ratio * plotHeight;
         return `<line class="area-chart-grid-line" x1="${padding.left}" x2="${width - padding.right}" y1="${y}" y2="${y}"></line><text class="area-chart-y-label" x="${padding.left - 10}" y="${y + 4}" text-anchor="end">${escapeHtml(formatNumber(domainMax * ratio))}</text>`;
     }).join('');
-    const xLabelIndexes = [...new Set([0, Math.floor((chartRows.length - 1) / 2), chartRows.length - 1])];
-    const xLabels = xLabelIndexes.map((index) => `<text class="area-chart-x-label" x="${xFor(index)}" y="${height - 17}" text-anchor="middle">${escapeHtml(chartRows[index].label)}</text>`).join('');
+    const xLabelIndexes = [...new Set(width < 480 ? [0, chartRows.length - 1] : [0, Math.floor((chartRows.length - 1) / 2), chartRows.length - 1])];
+    const xLabels = xLabelIndexes.map((index) => `<text class="area-chart-x-label" x="${xFor(index)}" y="${height - 17}" text-anchor="${chartRows.length === 1 ? 'middle' : index === 0 ? 'start' : index === chartRows.length - 1 ? 'end' : 'middle'}">${escapeHtml(chartRows[index].label)}</text>`).join('');
     const pointMarkup = points.filter(Boolean).map((point) => `
         <circle class="area-chart-point" cx="${point.x}" cy="${point.y}" r="4" tabindex="0" role="button"
             data-chart-label="${escapeHtml(point.row.label)}"
@@ -1296,6 +1295,8 @@ const renderHouseholdAreaChart = (container, series, options = {}) => {
 
 const renderHouseholdTrendAreaChart = (container, series, options = {}) => {
     if (!container) return;
+    observeChartWidth(container, () => renderHouseholdTrendAreaChart(container, series, options));
+    const width = responsiveChartWidth(container);
 
     const rows = (Array.isArray(series) ? series : []).map((row) => {
         const rawValue = row.cubic_meters ?? row.total_cubic_meter ?? row.consumption ?? null;
@@ -1329,12 +1330,12 @@ const renderHouseholdTrendAreaChart = (container, series, options = {}) => {
 
     container.classList.remove('is-empty');
     container.classList.toggle('is-single-point', actualIndexes.length === 1);
-    const signature = JSON.stringify({ rows, state: 'area', period: options.period ?? '' });
+    const signature = JSON.stringify({ rows, state: 'area', period: options.period ?? '', width });
     if (container.dataset.chartSignature === signature) return;
     container.dataset.chartSignature = signature;
 
-    const width = 760;
     const height = actualIndexes.length === 1 ? 260 : 320;
+    container.style.setProperty('--chart-height', `${height}px`);
     const padding = { top: 28, right: 20, bottom: 52, left: 70 };
     const plotWidth = width - padding.left - padding.right;
     const plotHeight = height - padding.top - padding.bottom;
@@ -1365,8 +1366,8 @@ const renderHouseholdTrendAreaChart = (container, series, options = {}) => {
         const y = padding.top + plotHeight - ratio * plotHeight;
         return `<line class="area-chart-grid-line" x1="${padding.left}" x2="${width - padding.right}" y1="${y}" y2="${y}"></line><text class="area-chart-y-label" x="${padding.left - 10}" y="${y + 4}" text-anchor="end">${escapeHtml(formatNumber(domainMax * ratio))}</text>`;
     }).join('');
-    const xLabelIndexes = [...new Set([0, Math.floor((rows.length - 1) / 2), rows.length - 1])];
-    const xLabels = xLabelIndexes.map((index) => `<text class="area-chart-x-label" x="${xFor(index)}" y="${height - 17}" text-anchor="middle">${escapeHtml(rows[index].label)}</text>`).join('');
+    const xLabelIndexes = [...new Set(width < 480 ? [0, rows.length - 1] : [0, Math.floor((rows.length - 1) / 2), rows.length - 1])];
+    const xLabels = xLabelIndexes.map((index) => `<text class="area-chart-x-label" x="${xFor(index)}" y="${height - 17}" text-anchor="${rows.length === 1 ? 'middle' : index === 0 ? 'start' : index === rows.length - 1 ? 'end' : 'middle'}">${escapeHtml(rows[index].label)}</text>`).join('');
     const pointMarkup = points.filter(Boolean).map((point) => {
         const valueText = `${formatNumber(point.row.value)} m³`;
         const litersText = `${formatNumber(point.row.liters, 2)} L`;
@@ -1483,8 +1484,8 @@ const ensureLiveChart = (container) => {
         chart.tooltip.hidden = false;
         const shellRect = chart.shell.getBoundingClientRect();
         const chartRect = chart.svg.getBoundingClientRect();
-        const x = (Number(point.getAttribute('cx')) / width) * chartRect.width + (chartRect.left - shellRect.left);
-        const y = (Number(point.getAttribute('cy')) / height) * chartRect.height + (chartRect.top - shellRect.top);
+        const x = (Number(point.getAttribute('cx')) / chart.width) * chartRect.width + (chartRect.left - shellRect.left);
+        const y = (Number(point.getAttribute('cy')) / chart.height) * chartRect.height + (chartRect.top - shellRect.top);
         chart.tooltip.style.left = `${Math.max(8, Math.min(shellRect.width - chart.tooltip.offsetWidth - 8, x - chart.tooltip.offsetWidth / 2))}px`;
         chart.tooltip.style.top = `${Math.max(8, y - chart.tooltip.offsetHeight - 12)}px`;
     };
@@ -1512,8 +1513,11 @@ const ensureLiveChart = (container) => {
 const renderLiveConsumptionChart = (readings = []) => {
     const container = $('[data-live-consumption-chart]');
     if (!container) return;
+    observeChartWidth(container, () => renderLiveConsumptionChart(readings));
 
     const chart = ensureLiveChart(container);
+    chart.width = responsiveChartWidth(container);
+    chart.svg.setAttribute('viewBox', `0 0 ${chart.width} ${chart.height}`);
     const rows = Array.isArray(readings) ? readings : [];
     const hasConsumption = rows.some((reading) => Number(reading?.liters_used ?? 0) > 0);
     const legend = container.closest('.chart-panel')?.querySelector('[data-live-chart-legend]');
@@ -1578,8 +1582,8 @@ const renderLiveConsumptionChart = (readings = []) => {
         return marker;
     }));
 
-    const labelIndexes = [...new Set([0, Math.floor((rows.length - 1) / 2), rows.length - 1])];
-    chart.xLabels.innerHTML = labelIndexes.map((index) => `<text class="area-chart-x-label" x="${xFor(index)}" y="${chart.height - 17}" text-anchor="middle">${escapeHtml(liveChartTimestamp(rows[index]?.recorded_at))}</text>`).join('');
+    const labelIndexes = [...new Set(chart.width < 480 ? [rows.length - 1] : [0, Math.floor((rows.length - 1) / 2), rows.length - 1])];
+    chart.xLabels.innerHTML = labelIndexes.map((index) => `<text class="area-chart-x-label" x="${xFor(index)}" y="${chart.height - 17}" text-anchor="${rows.length === 1 ? 'middle' : index === rows.length - 1 ? 'end' : index === 0 ? 'start' : 'middle'}">${escapeHtml(liveChartTimestamp(rows[index]?.recorded_at))}</text>`).join('');
     chart.shell.hidden = rows.length === 0;
     chart.empty.hidden = rows.length !== 0;
     chart.note.hidden = rows.length !== 1;
@@ -1861,6 +1865,8 @@ const setTokenInput = () => {
 };
 
 const showHouseholdView = (target) => {
+    setHouseholdNavigationOpen(false);
+    const previousView = householdActiveView;
     householdActiveView = target;
     $$('[data-household-view]').forEach((view) => {
         const isActive = view.dataset.householdView === target;
@@ -1888,10 +1894,7 @@ const showHouseholdView = (target) => {
             heading.focus({ preventScroll: true });
         }
     }
-    if (householdSidebar?.classList.contains('is-open')) {
-        householdSidebar.classList.remove('is-open');
-        householdSidebarToggle?.setAttribute('aria-expanded', 'false');
-    }
+    if (previousView !== target) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     if (target === 'dashboard') {
         loadDashboard();
         loadConsumptionGoal();
@@ -1906,6 +1909,7 @@ const showHouseholdView = (target) => {
 };
 
 const showAdminView = (target, shouldUpdateHash = true) => {
+    const previousView = $('[data-admin-view].is-active')?.dataset.adminView;
     $$('[data-admin-view]').forEach((view) => {
         const isActive = view.dataset.adminView === target;
         view.classList.toggle('is-active', isActive);
@@ -1930,6 +1934,7 @@ const showAdminView = (target, shouldUpdateHash = true) => {
             heading.focus({ preventScroll: true });
         }
     }
+    if (previousView !== target) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     if (target === 'service-requests') loadAdminServiceRequests();
     if (target === 'water-rates') startConsumptionBaselineRefresh();
     else stopConsumptionBaselineRefresh();
@@ -5611,6 +5616,7 @@ const loadAdmin = async () => {
 };
 
 const bootCommon = () => {
+    bootResponsiveLayout();
     setTokenInput();
     bootLogout();
     let storedLocale = 'en';
@@ -5636,11 +5642,6 @@ const bootCommon = () => {
             icon?.classList.toggle('bi-eye-slash', shouldReveal);
         });
     });
-
-    const closeHouseholdSidebar = () => {
-        householdSidebar?.classList.remove('is-open');
-        householdSidebarToggle?.setAttribute('aria-expanded', 'false');
-    };
 
     const setHouseholdSidebarCollapsed = (isCollapsed, persist = false) => {
         document.body.classList.toggle('household-sidebar-collapsed', isCollapsed);
@@ -5680,11 +5681,6 @@ const bootCommon = () => {
         });
     }
 
-    householdSidebarToggle?.addEventListener('click', () => {
-        const isOpen = householdSidebar?.classList.toggle('is-open') === true;
-        householdSidebarToggle.setAttribute('aria-expanded', String(isOpen));
-    });
-    householdSidebarDismiss?.addEventListener('click', closeHouseholdSidebar);
     notificationToggle?.addEventListener('click', () => {
         const shouldOpen = notificationDropdown?.hidden !== false;
         setNotificationDropdownOpen(shouldOpen);
@@ -5703,10 +5699,6 @@ const bootCommon = () => {
         }
     });
     document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && householdSidebar?.classList.contains('is-open')) {
-            closeHouseholdSidebar();
-            householdSidebarToggle?.focus();
-        }
         if (event.key === 'Escape' && notificationDropdown?.hidden === false) {
             setNotificationDropdownOpen(false);
             notificationToggle?.focus();

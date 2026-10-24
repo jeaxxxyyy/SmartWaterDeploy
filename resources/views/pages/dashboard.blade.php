@@ -4,7 +4,7 @@
 @section('page', 'household')
 @section('app-header-actions')
     <div class="household-header-actions" aria-label="Household account actions">
-        <button class="household-menu-button" type="button" data-household-sidebar-toggle aria-expanded="false" aria-controls="household-sidebar">Menu</button>
+        <button class="household-menu-button" type="button" data-household-sidebar-toggle aria-expanded="false" aria-controls="household-sidebar" aria-label="Open household navigation"><i class="bi bi-list" aria-hidden="true"></i></button>
         <div class="household-notification-control" data-notification-control>
             <button class="header-action-button household-notification-button" type="button" data-notification-toggle aria-haspopup="dialog" aria-expanded="false" aria-controls="household-notification-dropdown" aria-label="Open notifications">
                 <i class="bi bi-bell" aria-hidden="true"></i>
@@ -41,6 +41,7 @@
             <small>Household workspace</small>
         </div>
         <button class="household-sidebar-collapse" type="button" data-household-sidebar-collapse aria-controls="household-sidebar" aria-expanded="true" aria-label="Collapse sidebar" title="Collapse sidebar">@include('components.ui-icon', ['name' => 'sidebar-collapse'])</button>
+        <button class="sidebar-mobile-close" type="button" data-household-sidebar-close aria-label="Close household navigation"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
     </div>
     <nav class="sidebar-nav household-sidebar-nav" aria-label="Household sections">
         <span class="sidebar-section-title">Workspace</span>
@@ -317,7 +318,7 @@
         </details>
     </section>
 
-    <section class="dashboard-view" data-household-view="live-monitoring">
+    <section class="dashboard-view" data-household-view="live-monitoring" data-horizontal-section-scroll id="household-live-section">
         <section class="panel filter-panel">
             <div>
                 <p class="eyebrow">Live Water Monitoring</p>
@@ -325,6 +326,10 @@
             </div>
         </section>
 
+        <div class="horizontal-scroll-controls section-scroll-controls" data-table-scroll-controls data-scroll-target="household-live-section" hidden>
+            <span>Move across the Live Feed</span>
+            <div><button class="button button-ghost" type="button" data-scroll-direction="-1" aria-controls="household-live-section">← Scroll left</button><button class="button button-ghost" type="button" data-scroll-direction="1" aria-controls="household-live-section">Scroll right →</button></div>
+        </div>
         <article class="panel panel-table household-data-panel">
             <div class="panel-head">
                 <div>
@@ -333,7 +338,11 @@
                 </div>
                 <span class="status-pill" data-live-label>Offline</span>
             </div>
-            <div class="table">
+            <div class="horizontal-scroll-controls" data-table-scroll-controls data-scroll-target="household-live-readings" hidden>
+                <span>More reading columns</span>
+                <div><button class="button button-ghost" type="button" data-scroll-direction="-1" aria-controls="household-live-readings">← Scroll left</button><button class="button button-ghost" type="button" data-scroll-direction="1" aria-controls="household-live-readings">Scroll right →</button></div>
+            </div>
+            <div class="table" id="household-live-readings">
                 <div class="table-head">
                     <span>Date</span>
                     <span>Flow rate</span>
@@ -352,6 +361,10 @@
             <div class="pager" data-readings-pager></div>
         </article>
 
+        <div class="horizontal-scroll-controls section-scroll-controls" data-table-scroll-controls data-scroll-target="household-live-section" hidden>
+            <span>Move across the Monitoring Graph</span>
+            <div><button class="button button-ghost" type="button" data-scroll-direction="-1" aria-controls="household-live-section">← Scroll left</button><button class="button button-ghost" type="button" data-scroll-direction="1" aria-controls="household-live-section">Scroll right →</button></div>
+        </div>
         <article class="panel chart-panel">
             <div class="panel-head">
                 <div>
@@ -376,7 +389,7 @@
         </article>
     </section>
 
-    <section class="dashboard-view" data-household-view="history">
+    <section class="dashboard-view" data-household-view="history" data-horizontal-section-scroll id="household-history-section">
         <div class="auth-tabs" data-history-tabs role="tablist" aria-label="Consumption history period">
             <button type="button" class="tab-button is-active" data-history-period="daily" role="tab" aria-selected="true">Daily</button>
             <button type="button" class="tab-button" data-history-period="weekly" role="tab" aria-selected="false">Weekly</button>
@@ -450,6 +463,10 @@
             </article>
         </section>
 
+        <div class="horizontal-scroll-controls section-scroll-controls" data-table-scroll-controls data-scroll-target="household-history-section" hidden>
+            <span>Move across the history graph</span>
+            <div><button class="button button-ghost" type="button" data-scroll-direction="-1" aria-controls="household-history-section">← Scroll left</button><button class="button button-ghost" type="button" data-scroll-direction="1" aria-controls="household-history-section">Scroll right →</button></div>
+        </div>
         <article class="panel chart-panel">
             <div class="panel-head">
                 <div>
@@ -463,6 +480,10 @@
             </div>
         </article>
 
+        <div class="horizontal-scroll-controls section-scroll-controls" data-table-scroll-controls data-scroll-target="household-history-section" hidden>
+            <span>Move across usage records</span>
+            <div><button class="button button-ghost" type="button" data-scroll-direction="-1" aria-controls="household-history-section">← Scroll left</button><button class="button button-ghost" type="button" data-scroll-direction="1" aria-controls="household-history-section">Scroll right →</button></div>
+        </div>
         <article class="panel panel-table household-data-panel">
             <div class="panel-head">
                 <div>
@@ -470,7 +491,11 @@
                     <h2>Meter readings and aggregated totals</h2>
                 </div>
             </div>
-            <div class="table">
+            <div class="horizontal-scroll-controls" data-table-scroll-controls data-scroll-target="household-consumption-history" hidden>
+                <span>More history columns</span>
+                <div><button class="button button-ghost" type="button" data-scroll-direction="-1" aria-controls="household-consumption-history">← Scroll left</button><button class="button button-ghost" type="button" data-scroll-direction="1" aria-controls="household-consumption-history">Scroll right →</button></div>
+            </div>
+            <div class="table" id="household-consumption-history">
                 <div class="table-head" data-history-table-head>
                     <span>Period</span>
                     <span>Total liters</span>
