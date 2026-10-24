@@ -7,6 +7,7 @@
 !.env.example
 !.env.production.example
 !.env.vercel.example
+!.env.neon.example
 /.vercel
 /dist
 .phpactor.json

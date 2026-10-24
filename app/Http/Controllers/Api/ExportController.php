@@ -45,7 +45,7 @@ class ExportController extends Controller
             ->when($targetUserId !== null, fn ($query) => $query->where('water_readings.user_id', $targetUserId))
             ->when(isset($validated['from']), fn ($query) => $query->where('water_readings.recorded_at', '>=', Carbon::parse($validated['from'])->startOfDay()))
             ->when(isset($validated['to']), fn ($query) => $query->where('water_readings.recorded_at', '<=', Carbon::parse($validated['to'])->endOfDay()))
-            ->selectRaw('users.account_number, users.name, date(water_readings.recorded_at) as period, sum(water_readings.liters_used) as total_liters, sum(water_readings.cubic_meter) as total_cubic_meter, sum(water_readings.estimated_bill) as estimated_bill, sum(case when water_readings.is_possible_leak = 1 then 1 else 0 end) as leak_count')
+            ->selectRaw('users.account_number, users.name, date(water_readings.recorded_at) as period, sum(water_readings.liters_used) as total_liters, sum(water_readings.cubic_meter) as total_cubic_meter, sum(water_readings.estimated_bill) as estimated_bill, sum(case when water_readings.is_possible_leak = TRUE then 1 else 0 end) as leak_count')
             ->groupBy('users.id', 'users.account_number', 'users.name', 'period')
             ->orderByDesc('period')
             ->get();

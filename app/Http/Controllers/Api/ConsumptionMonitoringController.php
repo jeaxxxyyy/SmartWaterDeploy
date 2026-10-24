@@ -37,7 +37,7 @@ class ConsumptionMonitoringController extends Controller
             ->selectRaw('COALESCE(SUM(liters_used), 0) as total_liters')
             ->selectRaw('COALESCE(SUM(cubic_meter), 0) as total_cubic_meter')
             ->selectRaw('COALESCE(SUM(estimated_bill), 0) as estimated_bill')
-            ->selectRaw('COUNT(DISTINCT CASE WHEN is_possible_leak = 1 OR is_threshold_exceeded = 1 THEN user_id END) as abnormal_count')
+            ->selectRaw('COUNT(DISTINCT CASE WHEN is_possible_leak = TRUE OR is_threshold_exceeded = TRUE THEN user_id END) as abnormal_count')
             ->first();
         $meta = [
             'household_count' => $matchingHouseholdIds->count(),
@@ -63,8 +63,8 @@ class ConsumptionMonitoringController extends Controller
             ->selectRaw('COALESCE(SUM(liters_used), 0) as total_liters')
             ->selectRaw('COALESCE(SUM(cubic_meter), 0) as total_cubic_meter')
             ->selectRaw('COALESCE(SUM(estimated_bill), 0) as estimated_bill')
-            ->selectRaw('COALESCE(SUM(CASE WHEN is_possible_leak = 1 THEN 1 ELSE 0 END), 0) as possible_leak_count')
-            ->selectRaw('COALESCE(SUM(CASE WHEN is_threshold_exceeded = 1 THEN 1 ELSE 0 END), 0) as threshold_exceeded_count')
+            ->selectRaw('COALESCE(SUM(CASE WHEN is_possible_leak = TRUE THEN 1 ELSE 0 END), 0) as possible_leak_count')
+            ->selectRaw('COALESCE(SUM(CASE WHEN is_threshold_exceeded = TRUE THEN 1 ELSE 0 END), 0) as threshold_exceeded_count')
             ->groupBy('user_id')
             ->get()
             ->keyBy('user_id');

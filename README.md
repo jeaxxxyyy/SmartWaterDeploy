@@ -4,7 +4,7 @@ Smart Water Monitoring is a Laravel application for household water telemetry, e
 
 ## Requirements
 
-- PHP 8.3+ with PDO SQLite or MySQL
+- PHP 8.3+ with the PDO driver for SQLite, MySQL, or PostgreSQL
 - Composer
 - Node.js and npm
 - Arduino IDE 2.x for the physical meter panel
@@ -75,6 +75,8 @@ php artisan serve --host=0.0.0.0 --port=8000
 ## Verification
 
 For Vercel import settings, environment variables, database setup, and the protected scheduler, see the [Vercel deployment instructions](docs/OPERATIONS.md#vercel-deployment).
+
+For Neon PostgreSQL connection files, migrations, and Vercel configuration, see the [Neon deployment guide](docs/NEON.md).
 
 ```bash
 php artisan test

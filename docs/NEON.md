@@ -1,0 +1,54 @@
+# Neon PostgreSQL deployment
+
+SmartWater can use MySQL locally and Neon PostgreSQL for the Vercel deployment. Neon is PostgreSQL, so its database connection must use `pgsql`, port `5432`, and TLS.
+
+## Private connection files
+
+Copy `.env.neon.example` to `.env.neon` for migration commands. Retain the application's existing `APP_KEY` and use the **direct** connection string from Neon's Connect dialog for `DB_URL`.
+
+Use `.env.vercel.neon` for Vercel environment variables, with the **pooled** connection string instead. Both private files are ignored by Git and excluded from deployment bundles. They contain credentials; never commit them or paste their contents into chat.
+
+The application reads `DB_URL`. Variables named `DATABASE_URL` or `POSTGRES_URL` supplied by an integration must be copied to `DB_URL` unless the application configuration is changed to read them.
+
+## Create the tables
+
+The PHP CLI needs `pdo_pgsql`. On the supplied Laragon PHP installation the extension is available and can be enabled for one command without changing the local PHP configuration:
+
+```powershell
+php -d extension=pdo_pgsql artisan migrate --force --env=neon
+php -d extension=pdo_pgsql artisan migrate:status --env=neon
+```
+
+Run migrations through a trusted local command, never a public web endpoint. These commands create application tables; they do not copy Laragon records. Do not run the development database seeder against the public deployment.
+
+For a fresh installation, create the first administrator using its hidden password prompt:
+
+```powershell
+php -d extension=pdo_pgsql artisan user:create-admin YOUR_EMAIL --name="Water Administrator" --env=neon
+```
+
+If migrating existing records, take a local backup and plan a PostgreSQL data transfer separately. A MySQL SQL dump cannot be imported directly into PostgreSQL. Keep the same application key for existing encrypted data.
+
+If the imported accounts use the development credentials documented in the README, replace those passwords before enabling public access to the database-backed application.
+
+## Configure Vercel
+
+In the **smart-water-deploy** project's Production environment variables, use the values in the private `.env.vercel.neon` file. The important database settings are:
+
+| Name | Value |
+| --- | --- |
+| `DB_CONNECTION` | `pgsql` |
+| `DB_PORT` | `5432` |
+| `DB_URL` | The full pooled Neon URL, including its TLS parameters |
+| `DB_SSLMODE` | `require`, or a certificate-verified mode configured for your environment |
+| `DB_CHARSET` | `utf8` |
+
+`DB_URL` supplies the host, port, database, username, and password. Check that an old MySQL connection string is not overriding it. Keep `APP_ENV=production`, `APP_DEBUG=false`, and `APP_URL=https://smart-water-deploy.vercel.app` for the current project. Use separate database credentials and a separate database branch for Preview deployments.
+
+Keep sessions and cache in the database and use `QUEUE_CONNECTION=sync`. Redeploy after saving the variables, then check `/up`, `/api/ping`, the login page, consumption monitoring, analytics, and a PDF export. Health endpoints alone do not verify the database-backed pages.
+
+## Remaining services
+
+Set up a verified SMTP provider before using password recovery or verification emails. Configure an external scheduler to invoke `/api/internal/schedule` every minute with `Authorization: Bearer YOUR_CRON_SECRET`, as described in `OPERATIONS.md`. Uploads require persistent object storage because Vercel's local filesystem is temporary.
+
+References: [Neon with Laravel](https://neon.com/docs/guides/laravel), [Neon connection pooling](https://neon.com/docs/connect/connection-pooling), [Laravel PostgreSQL connections](https://laravel.com/docs/13.x/database).

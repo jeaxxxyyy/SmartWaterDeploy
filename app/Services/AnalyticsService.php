@@ -252,9 +252,11 @@ class AnalyticsService
     public function consumptionBaselineComparisons(): Collection
     {
         $driver = DB::connection()->getDriverName();
-        $monthExpression = $driver === 'sqlite'
-            ? "strftime('%Y-%m', water_readings.recorded_at)"
-            : "DATE_FORMAT(water_readings.recorded_at, '%Y-%m')";
+        $monthExpression = match ($driver) {
+            'pgsql' => "TO_CHAR(water_readings.recorded_at, 'YYYY-MM')",
+            'mysql', 'mariadb' => "DATE_FORMAT(water_readings.recorded_at, '%Y-%m')",
+            default => "strftime('%Y-%m', water_readings.recorded_at)",
+        };
         $monthlyRows = WaterReading::query()
             ->join('users', 'users.id', '=', 'water_readings.user_id')
             ->where('users.role', 'user')
