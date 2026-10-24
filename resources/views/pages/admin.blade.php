@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Admin | Smart Water Monitoring')
+@section('title', 'Admin | SmartWater')
 @section('page', 'admin')
 @push('head')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -26,7 +26,7 @@
 @section('admin-sidebar')
     <div class="admin-sidebar-brand">
         <span class="admin-sidebar-mark"><i class="bi bi-droplet-half" aria-hidden="true"></i></span>
-        <div class="admin-sidebar-brand-copy"><strong>Smart Water</strong><small>Operations console</small></div>
+        <div class="admin-sidebar-brand-copy"><strong>SmartWater</strong><small>Operations console</small></div>
         <button class="admin-sidebar-collapse" type="button" data-admin-sidebar-collapse aria-controls="admin-sidebar" aria-expanded="true" aria-label="Collapse administrator sidebar" title="Collapse sidebar">@include('components.ui-icon', ['name' => 'sidebar-collapse'])</button>
     </div>
     <nav class="sidebar-nav admin-sidebar-nav" aria-label="Administrator sections">

@@ -17,7 +17,7 @@
 <body>
     <div class="receipt">
         <h1>Official Payment Receipt</h1>
-        <div class="muted">Smart Water Monitoring</div>
+        <div class="muted">SmartWater</div>
         <table>
             <tr><td>Receipt number</td><td>{{ $payment->receipt_number }}</td></tr>
             <tr><td>Household</td><td>{{ $payment->statement->user->name }}</td></tr>

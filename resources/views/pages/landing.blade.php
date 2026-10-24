@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Smart Water Monitoring')
+@section('title', 'SmartWater')
 @section('page', 'landing')
 @section('public-nav')
     <a href="#features">Platform</a>
@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <div class="landing-preview" aria-label="Smart Water dashboard preview">
+        <div class="landing-preview" aria-label="SmartWater dashboard preview">
             <div class="preview-glow"></div>
             <div class="preview-card">
                 <div class="preview-header">
@@ -63,7 +63,7 @@
         </div>
     </section>
 
-    <section class="landing-strip" id="how-it-works" aria-label="How Smart Water works">
+    <section class="landing-strip" id="how-it-works" aria-label="How SmartWater works">
         <div><strong>From sensor to insight</strong><span>Everything you need to make better water decisions.</span></div>
         <div class="strip-step"><b>01</b><span>Connect your meter</span></div>
         <div class="strip-step"><b>02</b><span>See live readings</span></div>
@@ -108,6 +108,6 @@
             <h2 id="cta-title">Ready When You Are, Make Everything Count</h2>
             <p>Sign in to see the workspace built for your role.</p>
         </div>
-        <a class="button button-light" href="{{ route('login') }}">Sign in to Smart Water <span aria-hidden="true">→</span></a>
+        <a class="button button-light" href="{{ route('login') }}">Sign in to SmartWater <span aria-hidden="true">→</span></a>
     </section>
 @endsection

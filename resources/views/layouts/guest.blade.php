@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#075985">
+    @include('components.site-meta')
     <link rel="manifest" href="/manifest.webmanifest">
     <link rel="icon" href="/smart-water-icon.svg" type="image/svg+xml">
-    <title>@yield('title', config('app.name', 'Smart Water Monitoring'))</title>
+    <title>@yield('title', config('app.name', 'SmartWater'))</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     @include('components.theme-init')
     @stack('head')
@@ -21,10 +22,10 @@
     <div class="toast-stack" data-toast-stack aria-live="polite" aria-atomic="true"></div>
 
     <header class="topbar">
-        <a href="{{ route('home') }}" class="brand" aria-label="Smart Water Monitoring home">
+        <a href="{{ route('home') }}" class="brand" aria-label="SmartWater home">
                     @include('components.brand-mark')
             <span>
-                <strong>Smart Water</strong>
+                <strong>SmartWater</strong>
                 <small>Monitoring System</small>
             </span>
         </a>
