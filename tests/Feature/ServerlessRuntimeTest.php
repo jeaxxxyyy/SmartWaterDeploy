@@ -7,6 +7,19 @@ use Tests\TestCase;
 
 class ServerlessRuntimeTest extends TestCase
 {
+    public function test_php_startup_failures_are_logged_without_exposing_them_in_the_response(): void
+    {
+        $process = new Process([
+            PHP_BINARY, '-c', base_path('api/php.ini'), '-r',
+            'throw new RuntimeException("Serverless startup failure test");',
+        ]);
+        $process->run();
+
+        $this->assertFalse($process->isSuccessful());
+        $this->assertStringContainsString('Serverless startup failure test', $process->getErrorOutput());
+        $this->assertSame('', $process->getOutput());
+    }
+
     public function test_dynamic_responses_disable_shared_caching_on_vercel(): void
     {
         config(['deployment.vercel' => true]);
