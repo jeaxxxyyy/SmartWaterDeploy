@@ -50,6 +50,8 @@ If the project already has environment variables, update existing entries throug
 
 The deployed PHP runtime's PostgreSQL client requires the explicit routing hint in `PGOPTIONS`. Without it, Neon reports “Endpoint ID is not specified” when TLS SNI is unavailable. Set this variable in Vercel before deploying so libpq receives it at process startup. For example, host `ep-example-pooler.c-6.us-east-2.aws.neon.tech` uses `PGOPTIONS=endpoint=ep-example-pooler`. Keep TLS enabled. Appending an arbitrary `options` parameter to `DB_URL` alone does not work with the current Laravel connector, which builds its own PDO DSN.
 
+The `pgsql` configuration also uses `PDO::PGSQL_ATTR_DISABLE_PREPARES` to execute native bound parameters without named server-side prepared statements. Older libpq clients can otherwise abort transactions when PDO deallocates statements through PgBouncer, including the database-cache increments used by login rate limiting. Keep the database cache and login throttling enabled.
+
 Keep sessions and cache in the database and use `QUEUE_CONNECTION=sync`. Redeploy after saving the variables, then check `/up`, `/api/ping`, the login page, consumption monitoring, analytics, and a PDF export. Health endpoints alone do not verify the database-backed pages.
 
 ## Remaining services
