@@ -44,8 +44,11 @@ If the project already has environment variables, update existing entries throug
 | `DB_URL` | The full pooled Neon URL, including its TLS parameters |
 | `DB_SSLMODE` | `require`, or a certificate-verified mode configured for your environment |
 | `DB_CHARSET` | `utf8` |
+| `PGOPTIONS` | `endpoint=YOUR_POOLED_ENDPOINT`, using the first segment of the pooled hostname, including `-pooler` |
 
 `DB_URL` supplies the host, port, database, username, and password. Check that an old MySQL connection string is not overriding it. Keep `APP_ENV=production`, `APP_DEBUG=false`, and `APP_URL=https://smart-water-deploy.vercel.app` for the current project. Use separate database credentials and a separate database branch for Preview deployments.
+
+The deployed PHP runtime's PostgreSQL client requires the explicit routing hint in `PGOPTIONS`. Without it, Neon reports “Endpoint ID is not specified” when TLS SNI is unavailable. Set this variable in Vercel before deploying so libpq receives it at process startup. For example, host `ep-example-pooler.c-6.us-east-2.aws.neon.tech` uses `PGOPTIONS=endpoint=ep-example-pooler`. Keep TLS enabled. Appending an arbitrary `options` parameter to `DB_URL` alone does not work with the current Laravel connector, which builds its own PDO DSN.
 
 Keep sessions and cache in the database and use `QUEUE_CONNECTION=sync`. Redeploy after saving the variables, then check `/up`, `/api/ping`, the login page, consumption monitoring, analytics, and a PDF export. Health endpoints alone do not verify the database-backed pages.
 
@@ -53,4 +56,4 @@ Keep sessions and cache in the database and use `QUEUE_CONNECTION=sync`. Redeplo
 
 Set up a verified SMTP provider before using password recovery or verification emails. Configure an external scheduler to invoke `/api/internal/schedule` every minute with `Authorization: Bearer YOUR_CRON_SECRET`, as described in `OPERATIONS.md`. Uploads require persistent object storage because Vercel's local filesystem is temporary.
 
-References: [Neon with Laravel](https://neon.com/docs/guides/laravel), [Neon connection pooling](https://neon.com/docs/connect/connection-pooling), [Laravel PostgreSQL connections](https://laravel.com/docs/13.x/database).
+References: [Neon with Laravel](https://neon.com/docs/guides/laravel), [Neon connection pooling](https://neon.com/docs/connect/connection-pooling), [Neon connection errors](https://neon.com/docs/connect/connection-errors#the-endpoint-id-is-not-specified), [PostgreSQL environment variables](https://www.postgresql.org/docs/current/libpq-envars.html), [Laravel PostgreSQL connections](https://laravel.com/docs/13.x/database).
